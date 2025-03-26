@@ -5,6 +5,7 @@ services:
     image: wordpress:latest # https://hub.docker.com/_/wordpress/
     ports:
       - ${IP}:${PORT}:80 # change ip if required
+    restart: always
     volumes:
       - ./config/wp_php.ini:/usr/local/etc/php/conf.d/conf.ini
       - ./wp-app:/var/www/html # Full wordpress project
@@ -22,6 +23,7 @@ services:
 
   wpcli:
     image: wordpress:cli
+    restart: on-failure:5
     volumes:
       - ./config/wp_php.ini:/usr/local/etc/php/conf.d/conf.ini
       - ./wp-app:/var/www/html
@@ -36,6 +38,7 @@ services:
 
   pma:
     image: phpmyadmin:latest  # https://hub.docker.com/_/phpmyadmin
+    restart: always
     environment:
       # https://docs.phpmyadmin.net/en/latest/setup.html#docker-environment-variables
       PMA_HOST: db
@@ -55,6 +58,7 @@ services:
     # platform: linux/x86_64  # Uncomment if your machine is running on arm (ex: Apple Silicon processor)
     ports:
       - ${IP}:3306:3306 # change ip if required
+    restart: always
     command: [
         '--character-set-server=utf8mb4',
         '--collation-server=utf8mb4_unicode_ci'
